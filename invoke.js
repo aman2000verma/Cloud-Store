@@ -39,7 +39,21 @@ const getFile = async (name) => {
       console.log(JSON.parse(res.Payload));
       const buffer = Buffer.from(JSON.parse(res.Payload).body.Body.data);
       console.log(buffer);
-      fs.createWriteStream("./Profile.png").write(buffer);
+      fs.createWriteStream(name).write(buffer);
+    });
+};
+
+const deleteFile = async (name) => {
+  const params = {
+    FunctionName: "deleteS3",
+    Payload: JSON.stringify({ fileName: name })
+  };
+  await lambda
+    .invoke(params)
+    .promise()
+    .catch((err) => console.log(err))
+    .then((res) => {
+      console.log(res);
     });
 };
 
@@ -61,6 +75,7 @@ const uploadFile = async (file) => {
     .then((res) => console.log(res));
 };
 
-// getList()
-// getFile("Profile.png");
-uploadFile("./Profile.png");
+// getList();
+// getFile("trackers.txt");
+// uploadFile("E:/trackers.txt");
+// deleteFile("trackers.json");
