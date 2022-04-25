@@ -18,7 +18,6 @@ AWS.config.update({ region: process.env.REGION });
 
 const s3 = new AWS.S3();
 const iam = new AWS.IAM();
-const lambda = new AWS.Lambda();
 
 /*********************Config Parameters********************/
 const s3CreateBucketParams = {
@@ -45,25 +44,6 @@ const lambdaPolicyParams = {
   PolicyArn: "arn:aws:iam::aws:policy/AmazonS3FullAccess",
   RoleName: process.env.ROLE
 };
-
-let lambdaFnParams = {
-  Runtime: process.env.LAMBDA_RUNTIME,
-  PackageType: "Zip",
-  Environment: {
-    Variables: {
-      BUCKET_NAME: process.env.BUCKET
-    }
-  }
-  // Role: <Arn>,
-  // Code: {ZipFile: <Buffer>}
-};
-
-const lambdaFunctions = [
-  { name: "listS3", handler: "listS3.handler", zip: "listS3.zip" },
-  { name: "getS3", handler: "getS3.handler", zip: "getS3.zip" },
-  { name: "uploadS3", handler: "uploadS3.handler", zip: "uploadS3.zip" },
-  { name: "deleteS3", handler: "deleteS3.handler", zip: "deleteS3.zip" }
-];
 
 /**********************************************************/
 
@@ -112,7 +92,8 @@ const createRole = async () => {
     .then((res) => {
       if (res) {
         console.log("Role created ", res.Role.Arn);
-        lambdaFnParams = { ...lambdaFnParams, Role: res.Role.Arn };
+        storeArn(JSON.stringify({ Role: res.Role.Arn }));
+        // lambdaFnParams = { ...lambdaFnParams, Role: res.Role.Arn };
         console.log("Attaching Lambda S3 execution policy with created role");
         attachPoliciesIAM();
       }
@@ -147,48 +128,19 @@ const getExistingArn = async () => {
     .then((res) => {
       if (res) {
         console.log("Arn:", res.Role.Arn);
-        lambdaFnParams = { ...lambdaFnParams, Role: res.Role.Arn };
-        createLambdaFunctions();
+        storeArn(JSON.stringify({ Role: res.Role.Arn }));
+        // lambdaFnParams = { ...lambdaFnParams, Role: res.Role.Arn };
       }
     });
 };
 
-/*
-Creates Lambda Function on AWS from zip file and then creates the function URL
-*/
-createLambdaFunctions = async () => {
-  lambdaFunctions.forEach((fn) => {
-    console.log(`Creating ${fn.name} Lambda Function`);
-    createFn(fn);
+const storeArn = async (data) => {
+  fs.writeFileSync("arn.json", data, (err) => {
+    if (err) {
+      console.err(err);
+      process.exit(1);
+    }
   });
-};
-
-const createFn = async (fnParams) => {
-  //Read zip
-  zip = fs.readFileSync(fnParams.zip);
-  lambdaFnParams = {
-    ...lambdaFnParams,
-    Code: { ZipFile: zip },
-    Handler: fnParams.handler,
-    FunctionName: fnParams.name
-  };
-  await lambda
-    .createFunction(lambdaFnParams)
-    .promise()
-    .catch((err) => {
-      if (err) {
-        if (err.statusCode === 409) {
-          console.log("Function already exist");
-        } else {
-          console.error(err);
-        }
-      }
-    })
-    .then((res) => {
-      if (res) {
-        console.log(res);
-      }
-    });
 };
 
 createBucket();
