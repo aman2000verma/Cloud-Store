@@ -49,6 +49,7 @@ const createFn = async (fnParams) => {
     Handler: fnParams.handler,
     FunctionName: fnParams.name
   };
+
   await lambda
     .createFunction(lambdaFnParams)
     .promise()

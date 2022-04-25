@@ -93,7 +93,6 @@ const createRole = async () => {
       if (res) {
         console.log("Role created ", res.Role.Arn);
         storeArn(JSON.stringify({ Role: res.Role.Arn }));
-        // lambdaFnParams = { ...lambdaFnParams, Role: res.Role.Arn };
         console.log("Attaching Lambda S3 execution policy with created role");
         attachPoliciesIAM();
       }
@@ -112,7 +111,6 @@ const attachPoliciesIAM = async () => {
     })
     .then((res) => {
       console.log("Policy attached successfully...");
-      createLambdaFunctions();
     });
 };
 
@@ -129,7 +127,6 @@ const getExistingArn = async () => {
       if (res) {
         console.log("Arn:", res.Role.Arn);
         storeArn(JSON.stringify({ Role: res.Role.Arn }));
-        // lambdaFnParams = { ...lambdaFnParams, Role: res.Role.Arn };
       }
     });
 };

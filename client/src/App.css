@@ -1,0 +1,57 @@
+.App {
+  text-align: center;
+}
+
+button {
+  border: none;
+  border-radius: 4px;
+  min-width: 8rem;
+  min-height: 3rem;
+  font-size: medium;
+  margin: 2px 2px;
+  cursor: pointer;
+}
+
+.delete {
+  background-color: red;
+  color: white;
+}
+.download {
+  background-color: greenyellow;
+  color: black;
+}
+
+.upload {
+  background-color: deepskyblue;
+  color: white;
+}
+
+.upload:disabled {
+  background-color: skyblue;
+  color: white;
+}
+
+table {
+  border: solid black 1px;
+  margin-left: 0;
+  margin-right: 0;
+  margin: 2rem 2rem;
+}
+
+table tr {
+  padding: 2px 2px;
+}
+
+table td,
+th {
+  border: solid black 1px;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form {
+  margin-top: 4rem;
+}

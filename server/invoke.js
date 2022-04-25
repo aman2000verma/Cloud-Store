@@ -22,7 +22,7 @@ const getList = async () => {
       console.log(err);
     })
     .then((res) => {
-      console.log(JSON.parse(res.Payload).body.Contents);
+      console.log(JSON.parse(res));
     });
 };
 
@@ -75,7 +75,7 @@ const uploadFile = async (file) => {
     .then((res) => console.log(res));
 };
 
-// getList();
+getList();
 // getFile("trackers.txt");
 // uploadFile("E:/trackers.txt");
 // deleteFile("trackers.json");
