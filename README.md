@@ -91,7 +91,7 @@ This time we need to provide network name while creating the containers (for bot
 
 ```bash
 docker run -d -p 8080:80 --name client --net crud aman2000verma/s3-client
-docker run --env-file .env -d -p 5000:5000 --name server --net aman2000verma/s3-server
+docker run --env-file .env -d -p 5000:5000 --name server --net crud aman2000verma/s3-server
 ```
 
 Open the link from the browser (use localhost in case of local docker container and use public ip of server in case of remote server)
