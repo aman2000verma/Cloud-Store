@@ -13,7 +13,7 @@ const Home = () => {
 
   const getList = async () => {
     await axios
-      .get("http://127.0.0.1:5000/")
+      .get("http://localhost:5000/")
       .catch((err) => {
         if (err) {
           console.error(err);
@@ -29,7 +29,7 @@ const Home = () => {
 
   const deleteFile = async (name) => {
     await axios
-      .delete(`http://127.0.0.1:5000/delete/${name}`)
+      .delete(`http://localhost:5000/delete/${name}`)
       .catch((err) => {
         if (err) {
           console.log(err);
@@ -45,7 +45,7 @@ const Home = () => {
 
   const downloadFile = async (name) => {
     await axios
-      .get(`http://127.0.0.1:5000/get/${name}`)
+      .get(`http://localhost:5000/get/${name}`)
       .catch((err) => {
         if (err) {
           console.error(err);

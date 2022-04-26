@@ -23,27 +23,14 @@ const Upload = () => {
     form.append("fileName", fileName);
     console.log(form);
     axios
-      .post("http://127.0.0.1:5000/upload", form, {
-        headers: { "Content-Type": "multipart/form-data" }
+      .post("http://localhost:5000/upload", form, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
         console.log(res.data);
         navigate("/");
       })
       .catch((err) => console.log(err));
-    // axios
-    //   .post("http://127.0.0.1:5000/upload", file)
-    //   .catch((err) => {
-    //     if (err) {
-    //       console.error(err);
-    //     }
-    //   })
-    //   .then((res) => {
-    //     if (res) {
-    //       console.log(res);
-    //       navigate("/");
-    //     }
-    //   });
   };
   return (
     <React.Fragment>
